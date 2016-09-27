@@ -1,0 +1,32 @@
+<ion-menu [content]="mycontent" [swipeEnabled]="false">
+  <ion-content>
+    <ion-list>
+      <ion-list>
+        <ion-list-header>
+          <button block secondary large [disabled]="!cartService.items || cartService.items.length == 0" (click)="showCheckoutModal()" menuClose>Charge {{cartService.getTotal() | currency:'USD':true:'1.2-2'}}</button>
+        </ion-list-header>
+        <ion-item-sliding *ngFor="let product of cartService.items; let i = index">
+          <ion-item>
+            <ion-thumbnail item-left>
+              <img [src]="product.Image__r.Image_Thumb__c" image-cache/>
+            </ion-thumbnail>
+            <h2>{{product.Root_Product_Name__c}}</h2>
+            <h3>{{product.Name}}</h3>
+            <p>{{product.Family}}</p>
+            <span clear item-right>{{product.PricebookEntries.records[0].UnitPrice | currency:'USD':true:'1.2-2'}}</span>
+          </ion-item>
+          <ion-item-options side="right">
+            <button danger (click)="cartService.removeItemFromCart(i)">
+              <ion-icon name="remove-circle"></ion-icon>
+              Remove
+            </button>
+          </ion-item-options>
+        </ion-item-sliding>
+        <ion-list-header *ngIf="!cartService.items || cartService.items.length == 0" padding text-center>
+          <ion-icon name="cart"></ion-icon> Your cart is empty
+        </ion-list-header>
+      </ion-list>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+<ion-nav #mycontent [root]="rootPage"></ion-nav>

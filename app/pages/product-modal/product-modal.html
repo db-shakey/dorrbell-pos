@@ -1,0 +1,25 @@
+<ion-card class="product-modal">
+  <ion-card-header>
+    {{product.Name}}
+  </ion-card-header>
+  <ion-card-content>
+    <ion-grid>
+      <ion-row>
+        <ion-col width-25>
+          <img [src]="product.Image__r.Image_Source__c" image-cache/>
+          <h5 text-center margin-top>{{product.Tags__c}}</h5>
+        </ion-col>
+        <ion-col width-75>
+          <ion-list>
+            <ion-item *ngFor="let variant of variants" (click)="addToCart(variant)" tappable>
+              <h2>{{variant.Name}}</h2>
+              <h3>{{variant.Inventory_Quantity__c}} In Stock</h3>
+              <p>{{variant.PricebookEntries.records[0].UnitPrice | currency:'USD':true:'1.2-2'}}</p>
+              <button clear item-right>Add To Cart</button>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card-content>
+</ion-card>

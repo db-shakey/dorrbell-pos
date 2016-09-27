@@ -1,0 +1,39 @@
+// http://ionicframework.com/docs/v2/theming/
+
+
+// App Shared Imports
+// --------------------------------------------------
+// These are the imports which make up the design of this app.
+// By default each design mode includes these shared imports.
+// App Shared Sass variables belong in app.variables.scss.
+
+//Fonts
+@font-face {
+  font-family: 'Montserrat-Regular';
+  src: url('../../fonts/Montserrat-Regular.eot');
+  src: url('../../fonts/Montserrat-Regular.eot?#iefix') format('embedded-opentype'),
+       url('../../fonts/Montserrat-Regular.ttf') format('truetype'),
+       url('../../fonts/Montserrat-Regular.svg#Montserrat-Regular') format('svg');
+}
+// @font-face {
+//   font-family: 'ShareTech';
+//   src: url('../../fonts/ShareTech-Regular.eot');
+//   src: url('../../fonts/ShareTech-Regular.eot?#iefix') format('embedded-opentype'),
+//        url('../../fonts/ShareTech-Regular.woff') format('woff'),
+//        url('../../fonts/ShareTech-Regular.ttf') format('truetype'),
+//        url('../../fonts/ShareTech-Regular.svg#ShareTech-Regular') format('svg');
+// }
+// @font-face {
+//   font-family: 'bebas-neue';
+//   src: url("../../fonts/BebasNeue Bold.otf") format("opentype");
+// }
+body{
+  font-family: 'Montserrat-Regular',sans-serif;
+}
+
+@import "../pages/home/home";
+@import "../pages/product-modal/product-modal";
+@import "../pages/checkout-modal/checkout";
+
+//Materialize
+@import "../../node_modules/materialize-css/sass/materialize";

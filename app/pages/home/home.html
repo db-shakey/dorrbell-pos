@@ -1,0 +1,89 @@
+<ion-header>
+  <ion-navbar primary>
+    <button menuToggle class="hide-on-large-only">
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Dorrbell</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="home">
+  <div class="row height-max">
+    <div class="col l8 s12 m12 left-col">
+      <ion-scroll scrollY="true">
+        <!--Category View-->
+        <div class="row card-background-page" *ngIf="categories && !selectedFamily">
+          <div class="col s6 m3" *ngFor="let key of categories">
+            <ion-card (click)="selectedFamily=key" tappable>
+              <div class="img-container">
+                <img [src]="objCat[key].Image" image-cache/>
+              </div>
+              <ion-card-content>
+                <ion-card-title>{{objCat[key].Name}}</ion-card-title>
+              </ion-card-content>
+            </ion-card>
+          </div>
+        </div>
+        <div class="row" *ngIf="selectedFamily">
+          <div class="col s6 m3" *ngFor="let product of objCat[selectedFamily].items">
+            <ion-card (click)="showProductModal(product)" tappable>
+              <img [src]="product.Image__r.Image_Thumb__c" image-cache/>
+              <ion-card-content>
+                <ion-card-title>
+                  {{product.Name}}
+                </ion-card-title>
+                <p>
+                  {{product.Brand__c}}
+                </p>
+              </ion-card-content>
+            </ion-card>
+          </div>
+        </div>
+      </ion-scroll>
+
+    </div>
+    <div class="col l4 hide-on-med-and-down bg-white">
+      <ion-scroll scrollY="true">
+          <ion-list>
+            <ion-list-header>
+              <button block secondary large [disabled]="!cartService.items || cartService.items.length == 0" (click)="showCheckoutModal()">Charge {{cartService.getTotal() | currency:'USD':true:'1.2-2'}}</button>
+            </ion-list-header>
+            <ion-item-sliding *ngFor="let product of cartService.items; let i = index">
+              <ion-item>
+                <ion-thumbnail item-left>
+                  <img [src]="product.Image__r.Image_Thumb__c" image-cache/>
+                </ion-thumbnail>
+                <h2>{{product.Root_Product_Name__c}}</h2>
+                <h3>{{product.Name}}</h3>
+                <p>{{product.Family}}</p>
+                <span clear item-right>{{product.PricebookEntries.records[0].UnitPrice | currency:'USD':true:'1.2-2'}}</span>
+              </ion-item>
+              <ion-item-options side="right">
+                <button danger (click)="cartService.removeItemFromCart(i)">
+                  <ion-icon name="remove-circle"></ion-icon>
+                  Remove
+                </button>
+              </ion-item-options>
+            </ion-item-sliding>
+            <ion-list-header *ngIf="!cartService.items || cartService.items.length == 0" padding text-center>
+              <ion-icon name="cart"></ion-icon> Your cart is empty
+            </ion-list-header>
+          </ion-list>
+      </ion-scroll>
+    </div>
+  </div>
+  <ion-footer>
+    <ion-toolbar primary>
+      <ion-buttons>
+         <button (click)="selectedFamily = null" large>
+           <ion-icon name="home"></ion-icon> Main Menu
+         </button>
+       </ion-buttons>
+       <ion-buttons end>
+         <button (click)="scanBarcode()" large>
+           <ion-icon name="barcode"></ion-icon> Scan
+         </button>
+       </ion-buttons>
+    </ion-toolbar>
+  </ion-footer>
+</ion-content>

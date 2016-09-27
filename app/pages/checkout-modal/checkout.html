@@ -1,0 +1,172 @@
+<ion-card class="checkout-modal">
+    <ion-card-header>
+      <ion-toolbar>
+        <ion-buttons start>
+          <button royal (click)="viewCtrl.dismiss()" large>
+            <ion-icon name="close" ></ion-icon>
+          </button>
+        </ion-buttons>
+        <ion-title>{{cartService.getTotal() | currency:'USD':true:'1.2-2'}}</ion-title>
+      </ion-toolbar>
+    </ion-card-header>
+    <ion-card-content *ngIf="step == 'payment'">
+      <h3>Cash</h3>
+      <div class="cash-row row">
+        <!-- <div class="col" width-25>
+          <button outline (click)="submitCash(5)">
+            $5.00
+          </button>
+        </div> -->
+
+        <div class="col s6 m3">
+          <button outline (click)="tenderAmount = 10" [disabled]="cartService.getTotal() > 10">
+            $10.00
+          </button>
+        </div>
+
+        <div class="col s6 m3">
+          <button outline (click)="tenderAmount = 20" [disabled]="cartService.getTotal() > 20">
+            $20.00
+          </button>
+        </div>
+
+        <div class="col s6 m3">
+          <button outline (click)="tenderAmount = 50" [disabled]="cartService.getTotal() > 50">
+            $50.00
+          </button>
+        </div>
+
+        <div class="col s6 m3">
+          <button outline (click)="tenderAmount = 100" [disabled]="cartService.getTotal() > 100">
+            $100.00
+          </button>
+        </div>
+      </div>
+      <ion-item class="has-icon hide-on-small-only">
+        <ion-icon name="cash" item-left></ion-icon>
+        <ion-input type="number" [(ngModel)]="tenderAmount" [placeholder]="cartService.getTotal() | currency:'USD':true:'1.2-2'"></ion-input>
+        <button item-right (click)="submitOrder()">
+          Tender
+        </button>
+      </ion-item>
+      <div class="hide-on-med-and-up">
+        <ion-item class="has-icon">
+          <ion-icon name="cash" item-left></ion-icon>
+          <ion-input type="number" [(ngModel)]="tenderAmount" [placeholder]="cartService.getTotal() | currency:'USD':true:'1.2-2'"></ion-input>
+        </ion-item>
+        <button block (click)="submitOrder()">
+          Tender
+        </button>
+      </div>
+
+
+      <h3 margin-top>
+        Card
+        <button small (click)="scanCard()" class="scan-card hide-on-med-and-up" outline>Scan</button>
+      </h3>
+      <ion-item class="has-icon hide-on-small-only">
+        <ion-icon name="card" item-left></ion-icon>
+        <ion-input type="text" placeholder="Scan, Swipe or Enter Number" [(ngModel)]="cardDisplay"></ion-input>
+        <ion-icon name="qr-scanner" item-right tappable (click)="scanCard()"></ion-icon>
+        <button item-right (click)="authorizeTransaction()">
+          Charge
+        </button>
+      </ion-item>
+      <div class="hide-on-med-and-up">
+        <ion-item class="has-icon">
+          <ion-icon name="card" item-left></ion-icon>
+          <ion-input type="text" placeholder="Scan, Swipe or Enter Number" [(ngModel)]="cardDisplay"></ion-input>
+        </ion-item>
+        <button (click)="authorizeTransaction()" block>
+          Charge
+        </button>
+      </div>
+    </ion-card-content>
+
+    <ion-card-content *ngIf="step == 'loading'" text-center class="loading-container">
+      <div>
+        <ion-spinner name="crescent" padding margin></ion-spinner>
+        <div>
+          {{loadingText}}
+        </div>
+      </div>
+    </ion-card-content>
+
+    <ion-card-content *ngIf="step == 'complete'">
+      <div text-center *ngIf="cartService.tip != 0">{{cartService.getSubtotal() | currency:'USD':true:'1.2-2'}} + {{cartService.getTipAmount() | currency:'USD':true:'1.2-2'}} tip</div>
+      <div text-center *ngIf="tenderAmount > cartService.getTotal()">Change Due: {{tenderAmount - cartService.getTotal() | currency:'USD':true:'1.2-2'}}</div>
+      <div text-center>
+        <h1>Your order is complete</h1>
+        <ion-icon name="checkmark-circle" margin class="complete"></ion-icon>
+      </div>
+      <button block margin-top (click)="newCart()">
+        New Order
+        <ion-icon name="arrow-forward"></ion-icon>
+      </button>
+    </ion-card-content>
+
+    <ion-card-content *ngIf="step == 'tip'">
+      <h3>Add A Tip</h3>
+      <div class="cash-row row">
+        <!-- <div class="col" width-25>
+          <button outline (click)="submitCash(5)">
+            $5.00
+          </button>
+        </div> -->
+
+        <div class="col s12 m4">
+          <ion-card tappable text-center (click)="setTip(15)">
+            <h2>15%</h2>
+            <p>{{cartService.getTipAmount(15) | currency:'USD':true:'1.2-2'}}</p>
+          </ion-card>
+        </div>
+
+        <div class="col s12 m4">
+          <ion-card tappable text-center (click)="setTip(20)">
+            <h2>20%</h2>
+            <p>{{cartService.getTipAmount(20) | currency:'USD':true:'1.2-2'}}</p>
+          </ion-card>
+        </div>
+
+        <div class="col s12 m4">
+          <ion-card tappable text-center (click)="setTip(25)">
+            <h2>25%</h2>
+            <p>{{cartService.getTipAmount(25) | currency:'USD':true:'1.2-2'}}</p>
+          </ion-card>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12" width-100>
+          <button outline block (click)="customTip()">
+            Custom Tip Amount
+          </button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12" width-100>
+          <button outline block (click)="setTip(0)">
+            No Tip
+          </button>
+        </div>
+      </div>
+    </ion-card-content>
+
+    <ion-card-content *ngIf="step == 'sign'" class="sign">
+      <div text-center *ngIf="cartService.tip != 0">{{cartService.getSubtotal() | currency:'USD':true:'1.2-2'}} + {{cartService.getTipAmount() | currency:'USD':true:'1.2-2'}} tip</div>
+      <signature-pad [options]="signaturePadOptions" (onEndEvent)="doneSigning = true"></signature-pad>
+      <div text-center padding>
+        I agree to pay the above total amount according to my card issuer agreement. Visa card ending in 6604.
+      </div>
+      <div margin-top>
+        <div class="row" no-margin>
+          <div class="col s12 m6">
+            <button block outline (click)="clearSig()">Clear Signature</button>
+          </div>
+          <div class="col s12 m6">
+            <button block [disabled]="!doneSigning" (click)="submitOrder()">Done Signing</button>
+          </div>
+        </div>
+      </div>
+    </ion-card-content>
+
+</ion-card>

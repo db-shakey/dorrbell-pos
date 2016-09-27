@@ -1,0 +1,109 @@
+.checkout-modal{
+
+  ion-card-header{
+    padding: 0;
+    ion-icon[name='close']{
+      font-size: 2.0em;
+    }
+  }
+  ion-card-content{
+    max-height: 80vh;
+    overflow-y: scroll;
+    @media only screen and (min-width:600px) {
+      padding: 3rem 5rem 7rem 5rem;
+      &.sign{
+        padding: 2rem 7rem;
+      }
+    }
+    @media only screen and (max-width:599px) {
+      padding: 1rem 2rem 3rem 2rem;
+      button[block]{
+        width: 90%;
+        margin-left: 1.4rem;
+      }
+      input{
+        font-size: 12px;
+      }
+    }
+  }
+  .cash-row{
+    margin: 1rem 0 0 0;
+
+    ion-card .card-title{
+      padding: 30px 5px;
+    }
+    button{
+      width: 90%;
+      padding: 4rem 0;
+    }
+    ion-card{
+      width: 90%;
+      padding: 2rem 0;
+      box-shadow: none;
+      border: 1px solid color($colors, primary);
+      margin:0;
+      display: inline-block;
+    }
+    @media only screen and (min-width:600px) {
+      .col:first-child{
+        text-align:left;
+      }
+      .col:last-child{
+        text-align:right;
+      }
+      .col:not(:first-child):not(:last-child){
+        text-align:center;
+      }
+    }
+    @media only screen and (max-width:599px) {
+      .col{
+        text-align: center;
+      }
+    }
+  }
+  [margin-top]{
+    margin-top: 4rem;
+  }
+  ion-item.has-icon{
+    .item-inner{
+      margin-left: 0;
+    }
+    ion-icon[item-right]{
+      right: 14rem;
+    }
+  }
+
+  .loading-container{
+    display: table !important;
+    width: 100% !important;
+    height: 50vh !important;
+    >div{
+      display: table-cell;
+      vertical-align: middle;
+      text-align: center;
+      padding-bottom: 10rem;
+      >ion-spinner{
+        width: 75px;
+        height: 75px;
+      }
+    }
+  }
+
+  signature-pad{
+    border-bottom: 1px solid color($colors, primary);
+    canvas{
+      width: 100%;
+    }
+  }
+
+  .scan-card{
+    float: right;
+    margin-top: -.5rem;
+    margin-right: 2rem;
+  }
+
+  ion-icon.complete{
+    font-size: 124px;
+  }
+
+}

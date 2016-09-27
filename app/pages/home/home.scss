@@ -1,0 +1,57 @@
+.home{
+  .bg-white{
+    background-color: #fff;
+  }
+  background-color: #f3f3f4;
+  >scroll-content{
+    overflow: hidden;
+  }
+  .bar-button-default{
+    color: color($colors, primary) !important;
+    background-color: color($colors, light);
+    height: 45px;
+    padding: 1rem;
+  }
+  ion-card {
+    
+    ion-card-content{
+      padding: 5px;
+      display: table;
+      width: 100%;
+      height: 7rem;
+      ion-card-title{
+        display: table-cell;
+        text-align: center;
+        vertical-align: middle;
+        font-size: 1.4rem;
+        padding: 0;
+      }
+    }
+    .img-container{
+      height: 10rem;
+      position: relative;
+      overflow: hidden;
+      img{
+        position: absolute;
+        display: block;
+        width: 100%;
+        top: -50%;
+      }
+    }
+  }
+  ion-thumbnail{
+    min-width: initial;
+  }
+  .height-max, .height-max ion-scroll, .height-max>.col, .height-max .scroll-zoom-wrapper{
+    padding: 0 !important;
+    height: 100%;
+  }
+  .height-max>.col>ion-scroll{
+    height: calc(100% - 43px);
+  }
+  ion-toolbar[primary] button{
+    color: #fff;
+    border-color: #fff;
+  }
+
+}
