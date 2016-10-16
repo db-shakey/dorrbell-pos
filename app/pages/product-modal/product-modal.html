@@ -1,23 +1,59 @@
 <ion-card class="product-modal">
   <ion-card-header>
-    {{product.Name}}
+    {{product.Family}} <ion-icon name="arrow-forward"></ion-icon> {{product.Name}}
+    <button clear (click)="viewCtrl.dismiss()">
+      <ion-icon ios="md-close-circle" md="md-close-circle"></ion-icon>
+    </button>
   </ion-card-header>
   <ion-card-content>
     <ion-grid>
       <ion-row>
         <ion-col width-25>
-          <img [src]="product.Image__r.Image_Source__c" image-cache/>
+          <img [src]="product.Image__r.Image_Source__c" image-cache default="https://dorrbell.herokuapp.com/images/red_wine.png"/>
           <h5 text-center margin-top>{{product.Tags__c}}</h5>
         </ion-col>
-        <ion-col width-75>
-          <ion-list>
+        <ion-col width-75 class="contents">
+          <!-- <ion-list>
             <ion-item *ngFor="let variant of variants" (click)="addToCart(variant)" tappable>
               <h2>{{variant.Name}}</h2>
               <h3>{{variant.Inventory_Quantity__c}} In Stock</h3>
               <p>{{variant.PricebookEntries.records[0].UnitPrice | currency:'USD':true:'1.2-2'}}</p>
               <button clear item-right>Add To Cart</button>
             </ion-item>
-          </ion-list>
+          </ion-list> -->
+          <h1>
+            {{product.Price | currency:'USD':true:'1.2-2'}}
+            <small>Exclude Tax</small>
+          </h1>
+          <hr/>
+          <h3>Description</h3>
+          <p>
+            {{product.Description}}
+          </p>
+          <h3 margin-top>Pairs With</h3>
+          <p margin-bottom>Partners for this include soft cheeses, fresh fruit, and anything spicy!</p>
+
+            <ion-row class="controls">
+              <ion-col width-40>
+                <ion-item>
+                  <ion-label>Quantity</ion-label>
+                  <ion-select [(ngModel)]="quantity">
+                    <ion-option value="1">1</ion-option>
+                    <ion-option value="2">2</ion-option>
+                    <ion-option value="3">3</ion-option>
+                    <ion-option value="4">4</ion-option>
+                    <ion-option value="5">5</ion-option>
+                  </ion-select>
+                </ion-item>
+              </ion-col>
+              <ion-col width-50 offset-10>
+                <button block class="add-to-cart" (click)="addToCart()">
+                  <ion-icon name="cart"></ion-icon>Add To Cart
+                </button>
+              </ion-col>
+            </ion-row>
+
+
         </ion-col>
       </ion-row>
     </ion-grid>

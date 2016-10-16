@@ -1,30 +1,30 @@
-import {Component, OnInit, Pipe, PipeTransform, NgZone} from '@angular/core';
-import {NavController, Platform, ModalController, LoadingController } from 'ionic-angular';
+import {Component, OnInit, Pipe, PipeTransform, Directive} from '@angular/core';
+import {NavController, Platform, ModalController, LoadingController, ActionSheetController, ViewController} from 'ionic-angular';
 import {ScreenOrientation, BarcodeScanner, Toast} from 'ionic-native';
-import {HerokuService} from '../../shared/heroku.service';
 import {CartService} from '../../shared/cart.service';
 import {DataService} from '../../shared/data.service';
-import {ImageCacheDirective} from '../../shared/image-cache.directive';
+import {ImageCacheDirective, DefaultImage} from '../../shared/image-cache.directive';
 
-import * as firebase from 'firebase';
+// import * as firebase from 'firebase';
 
 import {ProductModal} from '../product-modal/product-modal';
 import {CheckoutModal} from '../checkout-modal/checkout';
-
+import {CustomerModal} from '../customer-modal/customer';
 
 @Component({
-  templateUrl: 'build/pages/home/home.html'
+  templateUrl: 'build/pages/home/home.html',
+  directives: [DefaultImage, ImageCacheDirective]
 })
 export class HomePage implements OnInit{
   categories: any[];
   objCat : any;
 
-  constructor(private navCtrl: NavController, private herokuService: HerokuService, private platform:Platform,
-              private dataService: DataService, private zone:NgZone, private modalCtrl: ModalController,
-              private loadingCtrl: LoadingController, private cartService: CartService) {}
+  constructor(private navCtrl: NavController, private platform:Platform,
+              private dataService: DataService, private modalCtrl: ModalController,
+              private loadingCtrl: LoadingController, private cartService: CartService, private actionSheetCtrl: ActionSheetController) {}
 
   showProductModal(product){
-    let modal = this.modalCtrl.create(ProductModal, {"product" : product}, {enableBackdropDismiss : true});
+    let modal = this.modalCtrl.create(ProductModal, {"product" : product}, {enableBackdropDismiss : false});
     modal.present();
   }
 
@@ -51,12 +51,45 @@ export class HomePage implements OnInit{
         loader.present();
         this.dataService.getProductByBarcode(barcodeText).subscribe(products => {
           loader.dismiss();
-          if(products && products.length > 0)
-            this.cartService.addItemToCart(products[0]);
+          if(products && products.length > 0){
+            this.showProductModal(products[0]);
+          }
           else
             Toast.show("Couldn't match product for barcode " + barcodeText, '5000', 'center').subscribe(a => {console.log('toast success');}, b=>{console.log('toast fail ' + b);});
         })
       }
     })
+  }
+
+  showContactModal(){
+    let modal = this.modalCtrl.create(CustomerModal);
+    modal.present();
+  }
+
+  presentPopover(event){
+    let actionSheet = this.actionSheetCtrl.create({
+     title: 'Customer Options',
+     buttons: [
+       {
+         text: 'View Order History',
+         handler: () => {
+           console.log('Archive clicked');
+         }
+       },
+       {
+         text: 'Switch Customer',
+         role: 'destructive',
+         handler: () => {
+           setTimeout(() => {
+             this.showContactModal();
+           }, 500);
+         }
+       },{
+         text: 'Cancel',
+         role: 'cancel'
+       }
+     ]
+   });
+   actionSheet.present();
   }
 }

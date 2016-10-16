@@ -3,7 +3,17 @@
     <button menuToggle class="hide-on-large-only">
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Dorrbell</ion-title>
+    <ion-title>E.&J. Gallo Winery</ion-title>
+    <ion-buttons end margin-right>
+      <button (click)="showContactModal()" *ngIf="!cartService.customer">
+        <ion-icon name="contact"></ion-icon>
+        Guest
+      </button>
+      <button (click)="presentPopover($event)" *ngIf="cartService.customer">
+        <ion-icon name="contact"></ion-icon>
+        {{cartService.customer.FirstName}} {{cartService.customer.LastName}}
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
@@ -27,7 +37,9 @@
         <div class="row" *ngIf="selectedFamily">
           <div class="col s6 m3" *ngFor="let product of objCat[selectedFamily].items">
             <ion-card (click)="showProductModal(product)" tappable>
-              <img [src]="product.Image__r.Image_Thumb__c" image-cache/>
+              <div class="img-container">
+                <img [src]="product.Image__r.Image_Thumb__c" image-cache default="https://dorrbell.herokuapp.com/images/red_wine.png"/>
+              </div>
               <ion-card-content>
                 <ion-card-title>
                   {{product.Name}}
@@ -56,7 +68,10 @@
                 <h2>{{product.Root_Product_Name__c}}</h2>
                 <h3>{{product.Name}}</h3>
                 <p>{{product.Family}}</p>
-                <span clear item-right>{{product.PricebookEntries.records[0].UnitPrice | currency:'USD':true:'1.2-2'}}</span>
+                <span clear item-right text-center>
+                  {{product.quantity}} @<br/>
+                  {{product.Price | currency:'USD':true:'1.2-2'}}
+                </span>
               </ion-item>
               <ion-item-options side="right">
                 <button danger (click)="cartService.removeItemFromCart(i)">

@@ -13,7 +13,7 @@
             <h2>{{product.Root_Product_Name__c}}</h2>
             <h3>{{product.Name}}</h3>
             <p>{{product.Family}}</p>
-            <span clear item-right>{{product.PricebookEntries.records[0].UnitPrice | currency:'USD':true:'1.2-2'}}</span>
+            <span clear item-right>{{product.Price | currency:'USD':true:'1.2-2'}}</span>
           </ion-item>
           <ion-item-options side="right">
             <button danger (click)="cartService.removeItemFromCart(i)">

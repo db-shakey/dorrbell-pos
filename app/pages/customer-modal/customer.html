@@ -1,0 +1,18 @@
+<ion-card class="customer-modal">
+  <ion-card-header>
+    Customer Search
+    <button clear (click)="viewCtrl.dismiss()">
+      <ion-icon ios="md-close-circle" md="md-close-circle"></ion-icon>
+    </button>
+  </ion-card-header>
+  <ion-card-content>
+    <ion-searchbar></ion-searchbar>
+    <ion-list>
+      <ion-item *ngFor="let item of contactList" (click)="setCustomer(item)" tappable>
+        <ion-icon name="person" item-left></ion-icon>
+
+        {{ item.FirstName }} {{item.LastName}}
+      </ion-item>
+    </ion-list>
+  </ion-card-content>
+</ion-card>

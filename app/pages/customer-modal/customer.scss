@@ -1,0 +1,32 @@
+.customer-modal{
+  ion-card-header{
+    >ion-icon{
+      margin: 0 .5rem;
+      font-size: 1.5rem;
+    }
+    button{
+      position: absolute;
+      top: -3px;
+      right: 0px;
+      background: white;
+      border: none;
+      border-radius: 50%;
+      height: 30px;
+      width: 30px;
+      box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+      outline: none;
+      ion-icon{
+        padding:0 0 0 1px !important;
+      }
+    }
+  }
+  input[type="search"]{
+    padding: 0 0 0 3rem !important;
+    margin: 0;
+    width:95%;
+  }
+  .searchbar-search-icon{
+    margin-left: 1rem !important;
+    left: 0;
+  }
+}

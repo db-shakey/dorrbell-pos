@@ -4,7 +4,8 @@ import {Observable} from 'rxjs/Rx';
 import 'rxjs/add/operator/share';
 
 // const endpoint: string = 'https://dorrbell-test.herokuapp.com';
-const endpoint: string = 'http://localhost:5000';
+// const endpoint: string = 'http://localhost:5000';
+const endpoint: string = 'https://dorrbell.herokuapp.com';
 
 @Injectable()
 export class HerokuService {
@@ -15,6 +16,10 @@ export class HerokuService {
     let headers = new Headers();
     headers.append('authorization', 'Basic Z14vbjcyayxOdUpnM0pfXw==');
     return headers;
+  }
+
+  getEndpoint(){
+    return endpoint;
   }
 
   get(url) {

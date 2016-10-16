@@ -1,5 +1,4 @@
 import { Injectable, OnInit } from '@angular/core';
-import { AngularFire } from 'angularfire2';
 import { Observable } from 'rxjs/Rx';
 import {Storage, SqlStorage} from 'ionic-angular';
 
@@ -8,13 +7,13 @@ import 'rxjs/add/operator/share';
 
 @Injectable()
 export class CartService implements OnInit {
-
+  public customer: any;
   public items: any;
   public tip: number = 0;
   public cardInfo: any;
   private storage;
 
-  constructor(public af: AngularFire, private herokuService: HerokuService) {
+  constructor(private herokuService: HerokuService) {
     this.items = [];
     this.storage = new Storage(SqlStorage);
     this.storage.get('cart').then(items => {
@@ -25,7 +24,8 @@ export class CartService implements OnInit {
 
   ngOnInit(){}
 
-  addItemToCart(product){
+  addItemToCart(product, quantity){
+    product.quantity = quantity;
     this.items.push(product);
     return this.storage.set('cart', JSON.stringify(this.items));
   }
@@ -48,16 +48,16 @@ export class CartService implements OnInit {
 
   getSubtotal(){
     let sum: number = 0;
-    this.items.forEach(variant => {
-      sum += variant.PricebookEntries.records[0].UnitPrice;
+    this.items.forEach(product => {
+      sum += (product.Price * product.quantity);
     })
     return sum;
   }
 
   getTotal(){
     let sum: number = 0;
-    this.items.forEach(variant => {
-      sum += variant.PricebookEntries.records[0].UnitPrice;
+    this.items.forEach(product => {
+      sum += (product.Price * product.quantity);
     })
     return sum * ((this.tip / 100) + 1);
   }
@@ -69,9 +69,10 @@ export class CartService implements OnInit {
   }
 
   submitOrder(){
-    let orderPost = this.herokuService.post('/api/order', {
+    let orderPost = this.herokuService.post('/orders', {
       items : this.items,
-      card : this.cardInfo
+      card : this.cardInfo,
+      customer : this.customer
     });
     return orderPost;
   }
